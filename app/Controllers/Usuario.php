@@ -23,7 +23,7 @@ class Usuario extends BaseController
         $usuario = new UsuarioEntity();
         $usuario = $this->request->getVar();
 
-        if($rolModel->where("id", $usuario->rol_id)){
+        /*if($rolModel->where("id", $usuario->rol_id)){
             $response = [
                 'statusCode' => 400,
                 'errors' => 'Rol no valido'
@@ -37,7 +37,7 @@ class Usuario extends BaseController
                 'errors' => 'Departamento no valido'
             ];
             return $this->respond($response);
-        }
+        }*/
 
         if (!$this->validate($usuarioModel->rules)) {
             $errors = $this->validator->getErrors();
@@ -67,7 +67,7 @@ class Usuario extends BaseController
         return $this->respond($response);
     }
 
-    public function updateAction($departamento_id)
+  /*  public function updateAction($departamento_id)
     {
         $departamentoModel = new DepartamentoModel();
         $departamento = new DepartamentoEntity();
@@ -102,7 +102,7 @@ class Usuario extends BaseController
             ];
             return $this->respond($response);
         }
-    }
+    }*/
 
     public function deleteAction($usuario_id)
     {

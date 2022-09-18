@@ -46,7 +46,7 @@ class Departamento extends BaseController
         return $this->respond($response);
     }
 
-    public function updateAction($departamento_id)
+  /*  public function updateAction($departamento_id)
     {
         $departamentoModel = new DepartamentoModel();
         $departamento = new DepartamentoEntity();
@@ -81,7 +81,7 @@ class Departamento extends BaseController
             ];
             return $this->respond($response);
         }
-    }
+    } */
 
     public function deleteAction($departamento_id)
     {
@@ -102,7 +102,7 @@ class Departamento extends BaseController
             $departamentoModel->delete($departamento_id_num);
             $response = [
                 'statusCode' => 200,
-                'msg' => 'Rol eliminado'
+                'msg' => 'Departamento eliminado'
             ];
             return $this->respond($response);
         }
