@@ -21,9 +21,10 @@ class Usuario extends BaseController
         $departamentoModel = new DepartamentoModel();
 
         $usuario = new UsuarioEntity();
-        $usuario = $this->request->getVar();
+        $usuario = $this->request->getPost();
 
-        if($rolModel->where("id", $usuario->rol_id)){
+
+        if($rolModel->where("rol.id", $usuario["rol_id"])->first() ==null){
             $response = [
                 'statusCode' => 400,
                 'errors' => 'Rol no valido'
@@ -31,7 +32,7 @@ class Usuario extends BaseController
             return $this->respond($response);
         }
 
-        if($departamentoModel->where("id",$usuario->departamento_id)){
+        if($departamentoModel->where("departamento.id",$usuario['departamento_id'])->first() == null){
             $response = [
                 'statusCode' => 400,
                 'errors' => 'Departamento no valido'
