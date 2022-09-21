@@ -68,7 +68,7 @@ class Usuario extends BaseController
         return $this->respond($response);
     }
 
-    public function updateAction($departamento_id)
+  /*  public function updateAction($departamento_id)
     {
         $departamentoModel = new DepartamentoModel();
         $departamento = new DepartamentoEntity();
@@ -103,7 +103,7 @@ class Usuario extends BaseController
             ];
             return $this->respond($response);
         }
-    }
+    }*/
 
     public function deleteAction($usuario_id)
     {

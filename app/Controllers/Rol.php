@@ -46,7 +46,7 @@ class Rol extends BaseController
         return $this->respond($response);
     }
 
-    public function updateAction($rol_id)
+   /* public function updateAction($rol_id)
     {
         $rolModel = new RolModel();
         $rol = new RolEntity();
@@ -90,7 +90,7 @@ class Rol extends BaseController
             ];
             return $this->respond($response);
         }
-    }
+    } */
 
     public function deleteAction($rol_id)
     {
