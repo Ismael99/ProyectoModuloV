@@ -9,21 +9,21 @@ use App\Entities\RolEntity;
 class RolModel extends Model
 {
     protected $table = "rol";
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'rol_id';
     protected $returnType = RolEntity::class;
-    protected $allowedFields = ["nombre", "descripcion"];
+    protected $allowedFields = ["rol_nombre", "rol_descripcion"];
     public $rules = [
-        'nombre' => [
+        'rol_nombre' => [
             'rules' => 'required|is_unique[rol.nombre]',
             'errors' => [
-                'required' => 'El campo nombre es requirido',
-                'is_unique' => 'El campo nombre debe de ser único'
+                'required' => 'El campo rol_nombre es requerido',
+                'is_unique' => 'El campo rol_nombre debe de ser único'
             ]
         ],
-        'descripcion' => [
+        'rol_descripcion' => [
             'rules' => 'required',
             'errors' => [
-                'required' => 'El campo descripcion es requirido',
+                'required' => 'El campo rol_descripcion es requerido',
             ]
         ],
 

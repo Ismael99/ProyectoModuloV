@@ -9,14 +9,14 @@ use App\Entities\DepartamentoEntity;
 class DepartamentoModel extends Model
 {
     protected $table = "departamento";
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'departamento_id';
     protected $returnType = DepartamentoEntity::class;
-    protected $allowedFields = ["nombre", "descripcion"];
+    protected $allowedFields = ["departamento_nombre", "departamento_descripcion"];
     public $rules = [
-        'nombre' => [
+        'departamento_nombre' => [
             'rules' => 'required',
             'errors' => [
-                'required' => 'El campo nombre es requirido',
+                'required' => 'El campo nombre es requerido',
             ]
         ],
     ];

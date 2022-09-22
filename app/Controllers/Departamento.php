@@ -12,7 +12,7 @@ class Departamento extends BaseController
 
     use ResponseTrait;
 
-    public function createAction()
+    public function create()
     {
         $departamentoModel = new DepartamentoModel();
         $departamento = new DepartamentoEntity();
@@ -35,7 +35,7 @@ class Departamento extends BaseController
         }
     }
 
-    public function getAction()
+    public function get()
     {
         $departamentoModel = new DepartamentoModel();
         $departamentoData = $departamentoModel->findAll();
@@ -46,7 +46,7 @@ class Departamento extends BaseController
         return $this->respond($response);
     }
 
-  /*  public function updateAction($departamento_id)
+    /*  public function update($departamento_id)
     {
         $departamentoModel = new DepartamentoModel();
         $departamento = new DepartamentoEntity();
@@ -83,7 +83,7 @@ class Departamento extends BaseController
         }
     } */
 
-    public function deleteAction($departamento_id)
+    public function delete($departamento_id)
     {
         $departamento_id_num = (int) $departamento_id;
         $departamentoModel = new DepartamentoModel();
@@ -98,7 +98,7 @@ class Departamento extends BaseController
                 'errors' => 'El id no es válido'
             ];
             return $this->respond($response);
-        }else{
+        } else {
             $departamentoModel->delete($departamento_id_num);
             $response = [
                 'statusCode' => 200,

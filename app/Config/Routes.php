@@ -37,20 +37,21 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('/rol', 'Rol::getAction');
-$routes->post('/rol', 'Rol::createAction');
-$routes->put('/rol/(:num)', 'Rol::updateAction/$1');
-$routes->delete('/rol/(:num)', 'Rol::deleteAction/$1');
+$routes->get('/rol', 'Rol::get');
+$routes->post('/rol', 'Rol::create');
+$routes->put('/rol/(:num)', 'Rol::update/$1');
+$routes->delete('/rol/(:num)', 'Rol::delete/$1');
 
 
-$routes->get('/departamento', 'Departamento::getAction');
-$routes->post('/departamento', 'Departamento::createAction');
-$routes->delete('/departamento/(:num)', 'Departamento::deleteAction/$1');
+$routes->get('/departamento', 'Departamento::get');
+$routes->post('/departamento', 'Departamento::create');
+$routes->delete('/departamento/(:num)', 'Departamento::delete/$1');
 
 
-$routes->get('/usuario', 'Usuario::getAction');
-$routes->post('/usuario', 'Usuario::createAction');
-$routes->delete('/usuario/(:num)', 'Usuario::deleteAction/$1');
+$routes->get('/usuario', 'Usuario::get');
+$routes->post('/usuario', 'Usuario::create');
+$routes->delete('/usuario/(:num)', 'Usuario::delete/$1');
+$routes->post('/usuario/login', 'Usuario::login');
 
 /*
  * --------------------------------------------------------------------
