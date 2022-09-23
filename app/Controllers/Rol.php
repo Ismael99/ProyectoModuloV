@@ -24,14 +24,14 @@ class Rol extends BaseController
                 'statusCode' => 400,
                 'errors' => $errors
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
         } else {
             $rolModel->save($rol);
             $response = [
                 'statusCode' => 201,
                 'data' => $rol
             ];
-            return $this->respond($response);
+            return $this->respond($response, 201);
         }
     }
 

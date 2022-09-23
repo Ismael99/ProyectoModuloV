@@ -15,7 +15,7 @@ class UsuarioModel extends Model
     protected $updatedField  = 'usuario_updated_at';
     protected $beforeInsert = ['hashPassword'];
 
-    protected $allowedFields = ["usuario_nombre", "usuario_apellido", "usuario_nacimiento", "usuario_dui", "usuario_telefono", "rol_id", "departamento_id", "usuario_password"];
+    protected $allowedFields = ["usuario_nombre", "usuario_apellido", "usuario_nacimiento", "usuario_dui", "usuario_telefono", "rol_id", "departamento_id", "usuario_password", "usuario_username"];
     public $rules = [
         'usuario_nombre' => [
             'rules' => 'required',

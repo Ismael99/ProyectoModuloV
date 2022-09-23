@@ -26,7 +26,7 @@ class Departamento extends BaseController
             ];
             return $this->respond($response);
         } else {
-            $departamentoModel->save($departamento);
+            $departamento = $departamentoModel->save($departamento);
             $response = [
                 'statusCode' => 201,
                 'data' => $departamento

@@ -14,7 +14,7 @@ class RolModel extends Model
     protected $allowedFields = ["rol_nombre", "rol_descripcion"];
     public $rules = [
         'rol_nombre' => [
-            'rules' => 'required|is_unique[rol.nombre]',
+            'rules' => 'required|is_unique[rol.rol_nombre]',
             'errors' => [
                 'required' => 'El campo rol_nombre es requerido',
                 'is_unique' => 'El campo rol_nombre debe de ser único'

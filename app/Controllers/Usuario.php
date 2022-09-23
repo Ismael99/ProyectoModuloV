@@ -2,26 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Entities\DepartamentoEntity;
 use App\Entities\UsuarioEntity;
 use App\Models\DepartamentoModel;
 use App\Models\UsuarioModel;
 use App\Models\RolModel;
 use CodeIgniter\API\ResponseTrait;
+use Firebase\JWT\JWT;
 
 class Usuario extends BaseController
 {
 
     use ResponseTrait;
 
-    public function createAction()
+    public function create()
     {
         $usuarioModel = new UsuarioModel();
         $rolModel = new RolModel();
         $departamentoModel = new DepartamentoModel();
 
-        $usuario = new UsuarioEntity();
-        $usuario = $this->request->getVar();
+        $usuario = $this->request->getPost();
+        $usuario['usuario_username'] = strtolower(substr($usuario['usuario_nombre'], 0, 2) . substr($usuario['usuario_apellido'], 0, 2) . time());
 
         /*if($rolModel->where("id", $usuario->rol_id)){
             $response = [
@@ -45,9 +45,13 @@ class Usuario extends BaseController
                 'statusCode' => 400,
                 'errors' => $errors
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
         } else {
-            $response = $usuarioModel->save($usuario);
+            $usuarioModel->save($usuario);
+
+            $usuario = $usuarioModel->where('usuario.usuario_username', $usuario['usuario_username'])->first();
+            unset($usuario->usuario_password);
+
             $response = [
                 'statusCode' => 201,
                 'data' => $usuario
@@ -56,7 +60,7 @@ class Usuario extends BaseController
         }
     }
 
-    public function getAction()
+    public function get()
     {
         $usuarioModel = new UsuarioModel();
         $usuarioData = $usuarioModel->findAll();
@@ -67,7 +71,7 @@ class Usuario extends BaseController
         return $this->respond($response);
     }
 
-  /*  public function updateAction($departamento_id)
+    /*  public function update($departamento_id)
     {
         $departamentoModel = new DepartamentoModel();
         $departamento = new DepartamentoEntity();
@@ -104,7 +108,7 @@ class Usuario extends BaseController
         }
     }*/
 
-    public function deleteAction($usuario_id)
+    public function delete($usuario_id)
     {
         $usuario_id_num = (int) $usuario_id;
         $usuarioModel = new UsuarioModel();
@@ -118,8 +122,8 @@ class Usuario extends BaseController
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
             ];
-            return $this->respond($response);
-        }else{
+            return $this->respond($response, 400);
+        } else {
             $usuarioModel->delete($usuario_id_num);
             $response = [
                 'statusCode' => 200,
@@ -128,5 +132,71 @@ class Usuario extends BaseController
             return $this->respond($response);
         }
         return $this->respond($response);
+    }
+
+    public function login()
+    {
+        $rules = [
+            'usuario_username' => 'required|min_length[6]|max_length[255]',
+            'usuario_password' => 'required|min_length[6]|max_length[255]|validateUser[usuario_username,usuario_password]',
+        ];
+
+        $errors = [
+            'usuario_password' => [
+                'validateUser' => "Email or Password didn't match",
+            ],
+        ];
+
+        if (!$this->validate($rules, $errors)) {
+            $errors = $this->validator->getErrors();
+            $response = [
+                'statusCode' => 400,
+                'errors' => $errors
+            ];
+            return $this->respond($response, 400);
+        } else {
+            $user = new UsuarioEntity();
+            $userModel = new UsuarioModel();
+
+            $user = $userModel
+                //->select('usuario.*, rol.nombre as rol_nombre, departamento.nombre as departamento_nombre')
+                ->where('usuario_username', $this->request->getPost()['usuario_username'])
+                ->join('rol', 'rol.rol_id = usuario.rol_id', 'left')
+                ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
+                ->first();
+
+
+            unset($user->usuario_password);
+            $token = $this->buildToken($user);
+            unset($user->usuario_username);
+
+            $response = [
+                'statusCode' => 200,
+                'data' => [
+                    'token' => $token,
+                    'user' => $user
+                ]
+            ];
+
+            return $this->respond($response, 200);
+        }
+    }
+
+    private function buildToken(UsuarioEntity $user)
+    {
+        $key = getenv('JWT_SECRET');
+        $iat = time(); // current timestamp value
+        $exp = $iat + 3600;
+
+        $payload = [
+            "iat" => $iat, //Time the JWT issued at
+            "exp" => $exp, // Expiration time of token
+            'usuario_username' => $user->usuario_username,
+            'sub' => $user->usuario_id,
+        ];
+
+        $token = JWT::encode($payload, $key, 'HS256');
+
+        return $token;
     }
 }
