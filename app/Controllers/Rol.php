@@ -54,7 +54,7 @@ class Rol extends BaseController
 
         $rol_id_num = (int) $rol_id;
 
-        if ($rol_id_num <= 0 || !$rolModel->find($rol_id_num)) {
+        if ($rol_id_num <= 0 || $rolModel->where("rol.id", $rol_id_num)->first() == null) {
             $response = [
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
@@ -62,8 +62,17 @@ class Rol extends BaseController
             return $this->respond($response);
         }
 
-        $rolToUpdate = $rolModel->find($rol_id_num);
-        // return $this->respond($rolToUpdate);
+        $rolToUpdate = $rolModel->where("rol.id", $rol_id_num)->first();
+        // $data = [...$rol, ...$rolToUpdate];
+        
+        $dataPrev = [
+            "nombre" => $rolToUpdate->nombre,
+            "descripcion" => $rolToUpdate->descripcion
+        ];
+        
+        
+        $data = array_merge($dataPrev, $rol);
+        return $this->respond($rol);
 
         if (!$this->validate($rolModel->rules)) {
             $errors = $this->validator->getErrors();
@@ -74,7 +83,7 @@ class Rol extends BaseController
             ];
             return $this->respond($response);
         } else {
-            $rolModel->update($rol_id_num, $rol);
+            $rolModel->update($rol_id_num, $data);
             $response = [
                 'statusCode' => 201,
                 'data' => $rol

@@ -23,7 +23,7 @@ class Usuario extends BaseController
         $usuario = $this->request->getPost();
         $usuario['usuario_username'] = strtolower(substr($usuario['usuario_nombre'], 0, 2) . substr($usuario['usuario_apellido'], 0, 2) . time());
 
-        /*if($rolModel->where("id", $usuario->rol_id)){
+        if($rolModel->where("rol.id", $usuario["rol_id"])->first() ==null){
             $response = [
                 'statusCode' => 400,
                 'errors' => 'Rol no valido'
@@ -31,13 +31,13 @@ class Usuario extends BaseController
             return $this->respond($response);
         }
 
-        if($departamentoModel->where("id",$usuario->departamento_id)){
+        if($departamentoModel->where("departamento.id",$usuario['departamento_id'])->first() == null){
             $response = [
                 'statusCode' => 400,
                 'errors' => 'Departamento no valido'
             ];
             return $this->respond($response);
-        }*/
+        }
 
         if (!$this->validate($usuarioModel->rules)) {
             $errors = $this->validator->getErrors();
