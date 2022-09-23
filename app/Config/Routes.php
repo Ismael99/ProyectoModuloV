@@ -37,7 +37,7 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
-$routes->get('/rol', 'Rol::get', ['filter' => 'authFilter:Admin,Gerente']);
+$routes->get('/rol', 'Rol::get', ['filter' => 'authFilter']);
 $routes->post('/rol', 'Rol::create');
 $routes->put('/rol/(:num)', 'Rol::update/$1');
 $routes->delete('/rol/(:num)', 'Rol::delete/$1');

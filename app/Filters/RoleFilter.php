@@ -37,7 +37,12 @@ class RoleFilter implements FilterInterface
 
         $request->user = $user;
 
-        if (!is_null(count($roles)) && !in_array($user->rol_nombre, $roles) && $user->rol_nombre !== 'Admin') {
+        if (
+            !is_null($roles)
+            && count($roles) > 0
+            && $user->rol_nombre !== 'Admin'
+            && !in_array($user->rol_nombre, $roles)
+        ) {
             $response = service('response');
             $response->setBody('Unauthorized');
             $response->setStatusCode(403);
