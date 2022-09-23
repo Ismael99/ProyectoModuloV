@@ -26,7 +26,10 @@ class Departamento extends BaseController
             ];
             return $this->respond($response);
         } else {
-            $departamento = $departamentoModel->save($departamento);
+            $departamentoModel->save($departamento);
+
+            $departamento = $departamentoModel->where('departamento.departamento_nombre', $departamento['departamento_nombre'])->first();
+
             $response = [
                 'statusCode' => 201,
                 'data' => $departamento
