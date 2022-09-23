@@ -2,8 +2,8 @@
 
 namespace App\Entities;
 
-use CodeIgniter\Entity;
+use CodeIgniter\Entity\Entity;
 
-class RolEntity extends Entity{
-    
+class RolEntity extends Entity
+{
 }

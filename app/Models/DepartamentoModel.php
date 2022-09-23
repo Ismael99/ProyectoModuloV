@@ -9,14 +9,16 @@ use App\Entities\DepartamentoEntity;
 class DepartamentoModel extends Model
 {
     protected $table = "departamento";
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'departamento_id';
     protected $returnType = DepartamentoEntity::class;
-    protected $allowedFields = ["nombre", "descripcion"];
+    protected $allowedFields = ["departamento_nombre", "departamento_descripcion"];
     public $rules = [
-        'nombre' => [
-            'rules' => 'required',
+        'departamento_nombre' => [
+            'rules' => 'required|is_unique[departamento.departamento_nombre]|max_length[25]',
             'errors' => [
-                'required' => 'El campo nombre es requirido',
+                'required' => 'El campo departamento_nombre es requerido',
+                'is_unique' => 'El campo departamento_nombre debe de ser único',
+                'max_length' => 'El campo departamento_nombre debe de ser menos de 25 caracteres',
             ]
         ],
     ];

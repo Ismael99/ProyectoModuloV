@@ -12,7 +12,7 @@ class Rol extends BaseController
 
     use ResponseTrait;
 
-    public function createAction()
+    public function create()
     {
         $rolModel = new RolModel();
         $rol = new RolEntity();
@@ -24,18 +24,18 @@ class Rol extends BaseController
                 'statusCode' => 400,
                 'errors' => $errors
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
         } else {
             $rolModel->save($rol);
             $response = [
                 'statusCode' => 201,
                 'data' => $rol
             ];
-            return $this->respond($response);
+            return $this->respond($response, 201);
         }
     }
 
-    public function getAction()
+    public function get()
     {
         $rolModel = new RolModel();
         $rolesData = $rolModel->findAll();
@@ -46,7 +46,7 @@ class Rol extends BaseController
         return $this->respond($response);
     }
 
-   /* public function updateAction($rol_id)
+    /* public function update($rol_id)
     {
         $rolModel = new RolModel();
         $rol = new RolEntity();
@@ -92,7 +92,7 @@ class Rol extends BaseController
         }
     } */
 
-    public function deleteAction($rol_id)
+    public function delete($rol_id)
     {
         $rol_id_num = (int) $rol_id;
         $rolModel = new RolModel();
@@ -107,7 +107,7 @@ class Rol extends BaseController
                 'errors' => 'El id no es válido'
             ];
             return $this->respond($response);
-        }else{
+        } else {
             $rolModel->delete($rol_id_num);
             $response = [
                 'statusCode' => 200,
