@@ -28,7 +28,7 @@ class RoleFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        $role = $arguments;
+        $roles = $arguments;
         $model = new UsuarioModel();
         $user = $model
             ->where('usuario.usuario_username', $request->user->usuario_username)
@@ -37,7 +37,7 @@ class RoleFilter implements FilterInterface
 
         $request->user = $user;
 
-        if ($role !== null && !in_array($user->rol_nombre, $role) && $user->rol_nombre !== 'Admin') {
+        if (!is_null(count($roles)) && !in_array($user->rol_nombre, $roles) && $user->rol_nombre !== 'Admin') {
             $response = service('response');
             $response->setBody('Unauthorized');
             $response->setStatusCode(403);
