@@ -10,14 +10,18 @@ class MisionFechasModel extends Model
     protected $table = "mision_fechas";
     protected $returnType = MisionFechasEntity::class;
     protected $createdField  = 'mision_fechas_created_at';
-    protected $allowedFields = ["mision_fechas_fecha",  
-                                "mision_id"];
+    protected $allowedFields = [
+        "mision_fechas_fecha",
+        "mision_id"
+    ];
+    protected $primaryKey = 'mision_fechas_id';
+
     public $rules = [
         'mision_fechas_fecha' => [
             'rules' => 'required',
             'errors' => [
                 'required' => 'El campo mision_fechas_fecha es requerido',
-                
+
             ]
         ],
 
@@ -27,7 +31,6 @@ class MisionFechasModel extends Model
                 'required' => 'El campo mision es requerido',
             ]
         ],
-        
-    ];
 
+    ];
 }

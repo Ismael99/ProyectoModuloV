@@ -26,8 +26,8 @@ create table usuario (
 	usuario_id int unsigned not null auto_increment,
 	usuario_username varchar(25) unique not null,
 	usuario_password text not null,
-	usuario_nombre varchar(100) unique not null,
-	usuario_apellido varchar(100) unique not null,
+	usuario_nombre varchar(100) not null,
+	usuario_apellido varchar(100) not null,
 	usuario_nacimiento date not null,
 	usuario_dui char(9) unique not null,
 	usuario_telefono char(8) unique not null,
@@ -80,12 +80,14 @@ create table capacitacion (
 	primary key (capacitacion_id)
 );
 
+
 create table capacitacion_fechas (
+	capacitacion_fechas_id int unsigned not null,
 	capacitacion_fechas_fecha date not null,
-	capacitacion_fechas_capacitacion_id int unsigned not null,
 	capacitacion_fechas_created_at timestamp default current_timestamp,
 	capacitacion_id int unsigned not null,
-constraint fk_capacitacion_fecha foreign key(capacitacion_id) references capacitacion(capacitacion_id) on delete cascade on update cascade
+	primary key (capacitacion_fechas_id),
+	constraint fk_capacitacion_fecha foreign key (capacitacion_id) references capacitacion (capacitacion_id) on delete cascade on update cascade
 );
 
 create table usuario_capacitacion (
@@ -113,9 +115,11 @@ create table mision (
 );
 
 create table mision_fechas (
+	mision_fechas_id int unsigned not null,
 	mision_fechas_fecha date not null,
 	mision_id int unsigned not null,
 	mision_fechas_created_at timestamp default current_timestamp,
+	primary key(mision_fechas_id),
 	constraint fk_mision_fecha foreign key(mision_id) references mision(mision_id) on delete cascade on update cascade
 );
 
@@ -149,4 +153,6 @@ create table mision_foto (
 );
 
 
-insert into rol (rol_id, rol_nombre) values (1, 'Admin'), (2, 'Gerente'), (3, 'Empleado') on conflict do nothing;
+insert into rol (rol_id, rol_nombre) values (1, 'Admin'), (2, 'Gerente'), (3, 'Empleado');
+
+insert into departamento(departamento_id, departamento_nombre) values(1, 'Finanzas');
