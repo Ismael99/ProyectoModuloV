@@ -3,7 +3,6 @@ create database if not exists modulo5;
 
 use modulo5;
 
-
 create table rol (
 	rol_id int unsigned not null auto_increment,
 	rol_nombre varchar(25) unique not null,
@@ -50,7 +49,6 @@ create table log (
 	primary key (log_id)
 );
 
-
 create table institucion (
 	institucion_id int unsigned not null auto_increment,
 	institucion_nombre varchar(255) unique not null,
@@ -80,7 +78,6 @@ create table capacitacion (
 	primary key (capacitacion_id)
 );
 
-
 create table capacitacion_fechas (
 	capacitacion_fechas_id int unsigned not null,
 	capacitacion_fechas_fecha date not null,
@@ -100,7 +97,6 @@ create table usuario_capacitacion (
 	constraint fk_usuario_capacitacion foreign key(usuario_id) references usuario(usuario_id),
 	constraint fk_capacitacion_usario foreign key(capacitacion_id) references capacitacion(capacitacion_id)
 );
-
 
 create table mision (
 	mision_id int unsigned not null auto_increment,
@@ -122,7 +118,6 @@ create table mision_fechas (
 	primary key(mision_fechas_id),
 	constraint fk_mision_fecha foreign key(mision_id) references mision(mision_id) on delete cascade on update cascade
 );
-
 
 create table usuario_mision (
 	usuario_id int unsigned not null,
@@ -152,7 +147,10 @@ create table mision_foto (
 	primary key (mision_foto_id)
 );
 
-
 insert into rol (rol_id, rol_nombre) values (1, 'Admin'), (2, 'Gerente'), (3, 'Empleado');
 
 insert into departamento(departamento_id, departamento_nombre) values(1, 'Finanzas');
+
+alter table capacitacion drop column capacitacion_estatus;
+
+alter table usuario_capacitacion add column capacitacion_estatus enum('en proceso', 'reprobada', 'finalizada con diploma') default 'en proceso';
