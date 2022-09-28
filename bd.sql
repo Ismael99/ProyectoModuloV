@@ -79,7 +79,7 @@ create table capacitacion (
 );
 
 create table capacitacion_fechas (
-	capacitacion_fechas_id int unsigned not null,
+	capacitacion_fechas_id int unsigned not null auto_increment,
 	capacitacion_fechas_fecha date not null,
 	capacitacion_fechas_created_at timestamp default current_timestamp,
 	capacitacion_id int unsigned not null,
@@ -111,7 +111,7 @@ create table mision (
 );
 
 create table mision_fechas (
-	mision_fechas_id int unsigned not null,
+	mision_fechas_id int unsigned not null auto_increment,
 	mision_fechas_fecha date not null,
 	mision_id int unsigned not null,
 	mision_fechas_created_at timestamp default current_timestamp,

@@ -18,17 +18,18 @@ class MisionFechasModel extends Model
 
     public $rules = [
         'mision_fechas_fecha' => [
-            'rules' => 'required',
+            'rules' => 'required|valid_date[Y-m-d]',
             'errors' => [
                 'required' => 'El campo mision_fechas_fecha es requerido',
-
+                'valid_date' => 'Formato invalido para mision_fechas_fecha: Y-m-d',
             ]
         ],
 
         'mision_id' => [
             'rules' => 'required|integer',
             'errors' => [
-                'required' => 'El campo mision es requerido',
+                'required' => 'El campo mision_id es requerido',
+                'integer' => 'El campo mision_id debe ser un numero entero',
             ]
         ],
 

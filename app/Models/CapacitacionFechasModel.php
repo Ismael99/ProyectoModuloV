@@ -17,10 +17,10 @@ class CapacitacionFechasModel extends Model
     ];
     public $rules = [
         'capacitacion_fechas_fecha' => [
-            'rules' => 'required',
+            'rules' => 'required|valid_date[Y-m-d]',
             'errors' => [
                 'required' => 'El campo capacitacion_fechas_fecha es requerido',
-
+                'valid_date' => 'Formato invalido para mision_fechas_fecha: Y-m-d',
             ]
         ],
 
