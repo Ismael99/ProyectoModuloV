@@ -2,29 +2,29 @@
 
 namespace App\Controllers;
 
-use App\Models\MisionFechasModel;
-use App\Models\MisionModel;
+use App\Models\CapacitacionFechasModel;
+use App\Models\CapacitacionModel;
 use CodeIgniter\API\ResponseTrait;
 
-class MisionFechas extends BaseController
+class CapacitacionFechas extends BaseController
 {
     use ResponseTrait;
 
-    protected MisionFechasModel $model;
-    protected MisionModel $misionModel;
+    protected CapacitacionFechasModel $model;
+    protected CapacitacionModel $capacitacionModel;
 
     public function __construct()
     {
-        $this->model = new MisionFechasModel();
-        $this->misionModel = new MisionModel();
+        $this->model = new CapacitacionFechasModel();
+        $this->capacitacionModel = new CapacitacionModel();
     }
 
     public function index()
     {
-        $query = $this->model->join('mision', 'mision.mision_id = mision_fechas.mision_id', 'left');
+        $query = $this->model->join('capacitacion', 'capacitacion.capacitacion_id = capacitacion_fechas.capacitacion_id', 'left');
 
         $params = $this->request->getVar();
-        $rules = ['mision_id' => $this->model->rules['mision_id']];
+        $rules = ['capacitacion_id' => $this->model->rules['capacitacion_id']];
 
 
         if (count($params) > 0) {
@@ -37,7 +37,7 @@ class MisionFechas extends BaseController
                 return $this->respond($response, 400);
             }
 
-            $query = $query->where('mision_fechas.mision_id', $params['mision_id']);
+            $query = $query->where('capacitacion_fechas.capacitacion_id', $params['capacitacion_id']);
         }
 
         $fechas = $query->findAll();
@@ -59,9 +59,9 @@ class MisionFechas extends BaseController
 
     public function update(int $id)
     {
-        $misionFecha = $this->model->find($id);
+        $capacitacionFecha = $this->model->find($id);
 
-        if (is_null($misionFecha)) {
+        if (is_null($capacitacionFecha)) {
             $response = [
                 'statusCode' => 400,
                 'message' => 'El campo mission_fechas_id es invalido',
@@ -77,9 +77,9 @@ class MisionFechas extends BaseController
 
     public function delete(int $id)
     {
-        $misionFecha = $this->model->find($id);
+        $capacitacionFecha = $this->model->find($id);
 
-        if (is_null($misionFecha)) {
+        if (is_null($capacitacionFecha)) {
             $response = [
                 'statusCode' => 400,
                 'message' => 'El campo mission_fechas_id es invalido',
@@ -118,10 +118,10 @@ class MisionFechas extends BaseController
             return ['response' => $response, 'statusCode' => 400];
         }
 
-        $mision = $this->misionModel->find($input['mision_id']);
+        $capacitacion = $this->capacitacionModel->find($input['capacitacion_id']);
 
-        if (is_null($mision)) {
-            $errors = (object) ['mision_id' => 'Id invalido'];
+        if (is_null($capacitacion)) {
+            $errors = (object) ['capacitacion_id' => 'Id invalido'];
 
             $response = [
                 'statusCode' => 400,
@@ -144,14 +144,14 @@ class MisionFechas extends BaseController
 
         $id = $this->model->getInsertID();
 
-        $misionFecha = $this
+        $capacitacionFecha = $this
             ->model
-            ->join('mision', 'mision.mision_id = mision_fechas.mision_id')
+            ->join('capacitacion', 'capacitacion.capacitacion_id = capacitacion_fechas.capacitacion_id')
             ->find($id);
 
         $response = [
             'statusCode' => 201,
-            'data' => $misionFecha,
+            'data' => $capacitacionFecha,
         ];
 
         return ['response' => $response, 'statusCode' => 201];
