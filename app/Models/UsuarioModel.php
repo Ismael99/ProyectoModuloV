@@ -43,6 +43,13 @@ class UsuarioModel extends Model
                 'is_unique' => 'El campo usuario_dui debe de ser unico'
             ]
         ],
+        'usuario_username' => [
+            'rules' => 'required|is_unique[usuario.usuario_username]',
+            'errors' => [
+                'required' => 'El campo usuario_username es requerido',
+                'is_unique' => 'El campo usuario_username debe de ser unico'
+            ]
+        ],
         'usuario_telefono' => [
             'rules' => 'required|is_unique[usuario.usuario_telefono]',
             'errors' => [

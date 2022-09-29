@@ -53,6 +53,17 @@ $routes->post('/usuario', 'Usuario::create');
 $routes->delete('/usuario/(:num)', 'Usuario::delete/$1');
 $routes->post('/usuario/login', 'Usuario::login');
 
+
+$routes->get('/institucion', 'Institucion::get', ['filter' => 'authFilter']);
+$routes->post('/institucion', 'Institucion::create');
+$routes->delete('/institucion/(:num)', 'Institucion::delete/$1');
+
+
+$routes->get('/modalidad', 'Modalidad::get', ['filter' => 'authFilter']);
+$routes->post('/modalidad', 'Modalidad::create', ['filter' => 'authFilter:Admin']);
+$routes->post('/modalidad/(:num)', 'Modalidad::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/modalidad/(:num)', 'Modalidad::delete/$1', ['filter' => 'authFilter:Admin']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -23,4 +23,13 @@ class ModalidadModel extends Model
         ],
 
     ];
+    public $rulesUpdate = [
+        'modalidad_nombre' => [
+            'rules' => 'is_unique[modalidad.modalidad_nombre]',
+            'errors' => [
+                'is_unique' => 'El campo modalidad_nombre debe de ser único'
+            ]
+        ],
+
+    ];
 }
