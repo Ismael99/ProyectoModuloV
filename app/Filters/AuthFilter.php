@@ -43,7 +43,7 @@ class AuthFilter implements FilterInterface
         // check if token is null or empty
         if (is_null($token) || empty($token)) {
             $response = service('response');
-            $response->setBody('Access denied');
+            $response->setBody(json_encode(['statusCode' => 401, 'message' => 'Unauthorized']));
             $response->setStatusCode(401);
             return $response;
         }
@@ -54,7 +54,7 @@ class AuthFilter implements FilterInterface
             $request->user = $decoded;
         } catch (Exception $ex) {
             $response = service('response');
-            $response->setBody('Access denied');
+            $response->setBody(json_encode(['statusCode' => 401, 'message' => 'Invalid token']));
             $response->setStatusCode(401);
             return $response;
         }

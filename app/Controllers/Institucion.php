@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\InstitucionEntity;
 use App\Models\InstitucionModel;
+use App\Models\UsuarioModel;
 
 use CodeIgniter\API\ResponseTrait;
 
@@ -46,7 +47,7 @@ class Institucion extends BaseController
         return $this->respond($response, 200);
     }
 
-    /* public function update($institucion_id)
+     public function update($institucion_id)
     {
         $institucionModel = new InstitucionModel();
         $institucion = new InstitucionEntity();
@@ -54,28 +55,45 @@ class Institucion extends BaseController
 
         $institucion_id_num = (int) $institucion_id;
 
-        if ($institucion_id_num <= 0 || $institucionModel->where("institucion.id", $institucion_id_num)->first() == null) {
+        $institucionToUpdate = $institucionModel->where("institucion.institucion_id", $institucion_id_num)->first();
+
+        if ($institucion_id_num <= 0 || $institucionToUpdate==null) {
             $response = [
                 'statusCode' => 400,
-                'errors' => 'El id no es válido'
+                'errors' => 'El institucion_id no es válido'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
+        }
+ 
+        $dataPrev = [
+            "institucion_nombre" => $institucionToUpdate->institucion_nombre,
+            "institucion_created_by" => $institucionToUpdate->institucion_created_by
+        ];
+
+        $data = array_merge($dataPrev, $institucion);
+
+        //Para llaves foraneas
+        $userModel = new UsuarioModel();
+        if($userModel->where("usuario.usuario_id", (int) $data["institucion_created_by"])->first() ==null ){
+            $response = [
+                'statusCode' => 400,
+                'errors' => 'El usuario_id no es válido'
+            ];
+            return $this->respond($response, 400);
         }
 
-        $institucionToUpdate = $institucionModel->where("institucion.id", $institucion_id_num)->first();
-        // $data = [...$institucion, ...$institucionToUpdate];
-        
-        $dataPrev = [
-            "nombre" => $institucionToUpdate->nombre,
-            "descripcion" => $institucionToUpdate->descripcion
-        ];
-        
-        
-        $data = array_merge($dataPrev, $institucion);
-        return $this->respond($institucion);
+        $array_keys_data = array_keys($data);
+        foreach($array_keys_data as $key){
+            if($data[$key] == $dataPrev[$key]){
+                unset($data[$key]);
+            }
+        };
 
-        if (!$this->validate($institucionModel->rules)) {
-            $errors = $this->validator->getErrors();
+        $validation = \Config\Services::validation();
+        $validation->setRules($institucionModel->rulesUpdate);
+        
+        if (!$validation->run($data)) {
+            $errors = $validation->getErrors();
             // echo $errors;
             $response = [
                 'statusCode' => 400,
@@ -83,37 +101,35 @@ class Institucion extends BaseController
             ];
             return $this->respond($response);
         } else {
-            $institucionModel->update($institucion_id_num, $data);
+            if(count($data) > 0){
+                $institucionModel->update($institucion_id_num, $data);
+            }
+            $institucionUpdated = $institucionModel->where("institucion.institucion_id", $institucion_id_num)->first();
             $response = [
                 'statusCode' => 201,
-                'data' => $institucion
+                'data' => $institucionUpdated
             ];
             return $this->respond($response);
         }
-    } */
+    }
 
     public function delete($institucion_id)
     {
         $institucion_id_num = (int) $institucion_id;
         $institucionModel = new InstitucionModel();
-        $institucionesData = $institucionModel->findAll();
-        $response = [
-            'statusCode' => 200,
-            'data' => $institucionesData
-        ];
         if ($institucion_id_num <= 0 || $institucionModel->where("institucion.institucion_id", $institucion_id_num)->first() == null ) {
             $response = [
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
         } else {
             // $institucionModel->delete($institucion_id_num);
             $response = [
                 'statusCode' => 200,
                 'msg' => 'Institucion eliminada'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 200);
         }
         return $this->respond($response);
     }

@@ -55,7 +55,8 @@ $routes->post('/usuario/login', 'Usuario::login');
 
 
 $routes->get('/institucion', 'Institucion::get', ['filter' => 'authFilter']);
-$routes->post('/institucion', 'Institucion::create');
+$routes->post('/institucion', 'Institucion::create' );
+$routes->post('/institucion/(:num)', 'Institucion::update/$1', ['filter' => 'authFilter:Admin']);
 $routes->delete('/institucion/(:num)', 'Institucion::delete/$1');
 
 

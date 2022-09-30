@@ -23,5 +23,14 @@ class InstitucionModel extends Model
         ],
         
     ];
+    public $rulesUpdate = [
+        'institucion_nombre' => [
+            'rules' => 'is_unique[institucion.institucion_nombre]',
+            'errors' => [
+                'is_unique' => 'El campo institucion_nombre debe de ser único'
+            ]
+        ],
+        
+    ];
 
 }

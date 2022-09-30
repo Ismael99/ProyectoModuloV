@@ -63,14 +63,11 @@ class Modalidad extends BaseController
             ];
             return $this->respond($response);
         }
-
-        
+ 
         $dataPrev = [
             "modalidad_nombre" => $modalidadToUpdate->modalidad_nombre,
         ];
 
-        
-        
         $data = array_merge($dataPrev, $modalidad);
 
         $array_keys_data = array_keys($data);
@@ -83,12 +80,6 @@ class Modalidad extends BaseController
         $validation = \Config\Services::validation();
         $validation->setRules($modalidadModel->rulesUpdate);
         
-
-        // $this->request->setVar($body);
-    
-
-        // return $this->respond($modalidad);
-
         if (!$validation->run($data)) {
             $errors = $validation->getErrors();
             // echo $errors;
@@ -101,9 +92,10 @@ class Modalidad extends BaseController
             if(count($data) > 0){
                 $modalidadModel->update($modalidad_id_num, $data);
             }
+            $modalidadUpdated = $modalidadModel->where("modalidad.modalidad_id", $modalidad_id_num)->first();
             $response = [
                 'statusCode' => 201,
-                'data' => $modalidad
+                'data' => $modalidadUpdated
             ];
             return $this->respond($response);
         }
@@ -113,24 +105,19 @@ class Modalidad extends BaseController
     {
         $modalidad_id_num = (int) $modalidad_id;
         $modalidadModel = new ModalidadModel();
-        $modalidadesData = $modalidadModel->findAll();
-        $response = [
-            'statusCode' => 200,
-            'data' => $modalidadesData
-        ];
         if ($modalidad_id_num <= 0 || $modalidadModel->where("modalidad.modalidad_id", $modalidad_id_num)->first() == null ) {
             $response = [
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
         } else {
             $modalidadModel->delete($modalidad_id_num);
             $response = [
                 'statusCode' => 200,
                 'msg' => 'Modalidad eliminada'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 200);
         }
         return $this->respond($response);
     }

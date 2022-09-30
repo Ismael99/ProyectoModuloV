@@ -45,7 +45,7 @@ class RoleFilter implements FilterInterface
         ) {
             $response = service('response');
             $response->setBody('Unauthorized');
-            $response->setStatusCode(403);
+            $response->setBody(json_encode(['statusCode' => 403, 'message' => 'Forbidden resource']));
             return $response;
         }
     }
