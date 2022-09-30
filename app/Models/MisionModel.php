@@ -12,10 +12,12 @@ class MisionModel extends Model
     protected $returnType = MisionEntity::class;
     protected $createdField  = 'mision_created_at';
     protected $updatedField  = 'mision_updated_at';
-    protected $allowedFields = ["mision_nombre", 
-                                "mision_descripcion",
-                                "mision_participantes", 
-                                "institucion_id"];
+    protected $allowedFields = [
+        "mision_nombre",
+        "mision_descripcion",
+        "mision_participantes",
+        "institucion_id"
+    ];
     public $rules = [
         'mision_nombre' => [
             'rules' => 'required|is_unique[mision.mision_nombre]',
@@ -25,24 +27,18 @@ class MisionModel extends Model
             ]
         ],
         'mision_descripcion' => [
-            'rules' => 'required',
-            'errors' => [
-                'required' => 'El campo mision_descripcion es requerido',
-            ]
+            'rules' => 'permit_empty',
         ],
         'mision_participantes' => [
-            'rules' => 'required',
-            'errors' => [
-                'required' => 'El campo mision_participantes es requerido',
-            ]
+            'rules' => 'permit_empty',
         ],
         'institucion_id' => [
             'rules' => 'required|integer',
             'errors' => [
                 'required' => 'El campo institucion es requerido',
+                'integer' => 'EL campo debe ser un numero entero'
             ]
         ],
-        
-    ];
 
+    ];
 }

@@ -74,6 +74,9 @@ $routes->post('/capacitacion-fecha', 'CapacitacionFechas::create');
 $routes->post('/capacitacion-fecha/(:num)', 'CapacitacionFechas::update/$1');
 $routes->delete('/capacitacion-fecha/(:num)', 'CapacitacionFechas::delete/$1');
 
+$routes->get('/mision', 'Mision::index');
+$routes->get('/mision/(:num)', 'Mision::index/$1');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

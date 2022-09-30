@@ -12,10 +12,11 @@ class CapacitacionModel extends Model
     protected $returnType = CapacitacionEntity::class;
     protected $createdField  = 'capacitacion_created_at';
     protected $updatedField  = 'capacitacion_updated_at';
-    protected $allowedFields = ["capacitacion_nombre",  
-                                "institucion_id",
-                                "modalidad_id",
-                                "capacitacion_estatus"];
+    protected $allowedFields = [
+        "capacitacion_nombre",
+        "institucion_id",
+        "modalidad_id"
+    ];
     public $rules = [
         'capacitacion_nombre' => [
             'rules' => 'required|is_unique[capacitacion.capacitacion_nombre]',
@@ -27,16 +28,16 @@ class CapacitacionModel extends Model
         'institucion_id' => [
             'rules' => 'required|integer',
             'errors' => [
-                'required' => 'El campo institucion es requerido',
+                'required' => 'El campo institucion_id es requerido',
+                'integer' => 'El campo institucion_id debe ser un numero entero'
             ]
         ],
         'modalidad_id' => [
             'rules' => 'required|integer',
             'errors' => [
-                'required' => 'El campo modalidad es requerido',
+                'required' => 'El campo modalidad_id es requerido',
+                'integer' => 'El campo modalidad_id debe ser un numero entero'
             ]
         ],
-        
     ];
-
 }
