@@ -74,6 +74,18 @@ $routes->post('/capacitacion-fecha', 'CapacitacionFechas::create');
 $routes->post('/capacitacion-fecha/(:num)', 'CapacitacionFechas::update/$1');
 $routes->delete('/capacitacion-fecha/(:num)', 'CapacitacionFechas::delete/$1');
 
+
+$routes->get('/institucion', 'Institucion::get', ['filter' => 'authFilter']);
+$routes->post('/institucion', 'Institucion::create');
+$routes->post('/institucion/(:num)', 'Institucion::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/institucion/(:num)', 'Institucion::delete/$1');
+
+
+$routes->get('/modalidad', 'Modalidad::get', ['filter' => 'authFilter']);
+$routes->post('/modalidad', 'Modalidad::create', ['filter' => 'authFilter:Admin']);
+$routes->post('/modalidad/(:num)', 'Modalidad::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/modalidad/(:num)', 'Modalidad::delete/$1', ['filter' => 'authFilter:Admin']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
