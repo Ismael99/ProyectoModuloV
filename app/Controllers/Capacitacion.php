@@ -6,6 +6,7 @@ use App\Models\InstitucionModel;
 use App\Models\CapacitacionFechasModel;
 use App\Models\CapacitacionFotoModel;
 use App\Models\CapacitacionModel;
+use App\Models\ModalidadModel;
 use App\Models\UsuarioModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -18,6 +19,7 @@ class Capacitacion extends BaseController
     protected CapacitacionFechasModel $capacitacionFechasModel;
     protected CapacitacionFotoModel $capacitacionFotoModel;
     protected UsuarioModel $usuarioModel;
+    protected ModalidadModel $modalidadModel;
 
     public function __construct()
     {
@@ -26,6 +28,7 @@ class Capacitacion extends BaseController
         $this->capacitacionFechasModel = new CapacitacionFechasModel();
         $this->capacitacionFotoModel = new CapacitacionFotoModel();
         $this->usuarioModel = new UsuarioModel();
+        $this->modalidadModel = new ModalidadModel();
     }
 
     public function index($id = null)
@@ -131,6 +134,7 @@ class Capacitacion extends BaseController
         // validate foreignKeys
         $entityValidationResults = array(
             'institucion_id' => $this->isInvalidEntityId($this->institucionModel, $input['institucion_id']),
+            'modalidad_id' => $this->isInvalidEntityId($this->modalidadModel, $input['modalidad_id']),
         );
 
         // filter error messages
