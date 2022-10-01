@@ -36,8 +36,17 @@ class Capacitacion extends BaseController
         $data = null;
         $query = $this
             ->model
+            ->select('capacitacion.*, institucion.*, modalidad.*')
             ->join('institucion', 'institucion.institucion_id = capacitacion.institucion_id', 'left')
             ->join('modalidad', 'modalidad.modalidad_id = capacitacion.modalidad_id', 'left');
+
+        if (!is_null($this->request->where)) {
+            $query = $query
+                ->join('usuario_capacitacion', 'usuario_capacitacion.capacitacion_id = capacitacion.capacitacion_id', 'left')
+                ->join('usuario', 'usuario.usuario_id = usuario_capacitacion.usuario_id', 'left')
+                ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
+                ->where($this->request->where);
+        }
 
         if (!is_null($id)) {
             $data = $query->find($id);
@@ -53,28 +62,40 @@ class Capacitacion extends BaseController
 
             $data->fechas = $this->capacitacionFechasModel->where('capacitacion_fechas.capacitacion_id', $id)->findAll();
             $data->fotos = $this->capacitacionFotoModel->where('capacitacion_foto.capacitacion_id', $id)->findAll();
-            $data->usuarios = $this
+            $usuariosQuery = $this
                 ->usuarioModel
                 ->select('usuario.usuario_id, usuario.usuario_nombre, usuario.usuario_apellido, rol.rol_nombre, departamento.departamento_nombre')
                 ->join('usuario_capacitacion', 'usuario_capacitacion.usuario_id = usuario.usuario_id', 'inner')
                 ->join('rol', 'rol.rol_id = usuario.rol_id', 'left')
                 ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
-                ->where('usuario_capacitacion.capacitacion_id', $id)
-                ->findAll();
+                ->where('usuario_capacitacion.capacitacion_id', $data->capacitacion_id);
+
+            if (!is_null($this->request->where)) {
+                $usuariosQuery = $usuariosQuery
+                    ->where($this->request->where);
+            }
+
+            $data->usuarios = $usuariosQuery->findAll();
         } else {
             $data = $query->findAll();
 
             $data = array_map(function ($capacitacion) {
                 $capacitacion->fechas = $this->capacitacionFechasModel->where('capacitacion_fechas.capacitacion_id', $capacitacion->capacitacion_id)->findAll();
                 $capacitacion->fotos = $this->capacitacionFotoModel->where('capacitacion_foto.capacitacion_id', $capacitacion->capacitacion_id)->findAll();
-                $capacitacion->usuarios = $this
+                $usuariosQuery = $this
                     ->usuarioModel
                     ->select('usuario.usuario_id, usuario.usuario_nombre, usuario.usuario_apellido, rol.rol_nombre, departamento.departamento_nombre')
                     ->join('usuario_capacitacion', 'usuario_capacitacion.usuario_id = usuario.usuario_id', 'inner')
                     ->join('rol', 'rol.rol_id = usuario.rol_id', 'left')
                     ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
-                    ->where('usuario_capacitacion.capacitacion_id', $capacitacion->capacitacion_id)
-                    ->findAll();
+                    ->where('usuario_capacitacion.capacitacion_id', $capacitacion->capacitacion_id);
+
+                if (!is_null($this->request->where)) {
+                    $usuariosQuery = $usuariosQuery
+                        ->where($this->request->where);
+                }
+
+                $capacitacion->usuarios = $usuariosQuery->findAll();
 
                 return $capacitacion;
             }, $data);
