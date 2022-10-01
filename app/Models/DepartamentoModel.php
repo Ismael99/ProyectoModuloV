@@ -21,5 +21,14 @@ class DepartamentoModel extends Model
                 'max_length' => 'El campo departamento_nombre debe de ser menos de 25 caracteres',
             ]
         ],
+        
+    ];
+    public $rulesUpdate = [
+        'departamento_nombre' => [
+            'rules' => 'is_unique[departamento.departamento_nombre]',
+            'errors' => [
+                'is_unique' => 'El campo departamento_nombre debe de ser único',
+            ]
+        ],
     ];
 }
