@@ -53,6 +53,27 @@ $routes->post('/usuario', 'Usuario::create');
 $routes->delete('/usuario/(:num)', 'Usuario::delete/$1');
 $routes->post('/usuario/login', 'Usuario::login');
 
+$routes->get('/usuario-mision', 'UsuarioMision::index');
+$routes->get('/usuario-mision/(usuario|mision)/(:num)', 'UsuarioMision::index/$1/$2');
+$routes->post('/usuario-mision', 'UsuarioMision::create');
+$routes->delete('/usuario/(:num)/mision/(:num)', 'UsuarioMision::delete/$1/$2');
+// $routes->get('/usuario/(:num)/mision/(:num)', 'UsuarioMision::index/$1/$2');
+
+$routes->get('/usuario-capacitacion', 'UsuarioCapacitacion::index');
+$routes->get('/usuario-capacitacion/(usuario|capacitacion)/(:num)', 'UsuarioCapacitacion::index/$1/$2');
+$routes->post('/usuario-capacitacion', 'UsuarioCapacitacion::create');
+$routes->delete('/usuario/(:num)/capacitacion/(:num)', 'UsuarioCapacitacion::delete/$1/$2');
+
+$routes->get('/mision-fecha', 'MisionFechas::index');
+$routes->post('/mision-fecha', 'MisionFechas::create');
+$routes->post('/mision-fecha/(:num)', 'MisionFechas::update/$1');
+$routes->delete('/mision-fecha/(:num)', 'MisionFechas::delete/$1');
+
+$routes->get('/capacitacion-fecha', 'CapacitacionFechas::index');
+$routes->post('/capacitacion-fecha', 'CapacitacionFechas::create');
+$routes->post('/capacitacion-fecha/(:num)', 'CapacitacionFechas::update/$1');
+$routes->delete('/capacitacion-fecha/(:num)', 'CapacitacionFechas::delete/$1');
+
 
 $routes->get('/institucion', 'Institucion::get', ['filter' => 'authFilter']);
 $routes->post('/institucion', 'Institucion::create', ['filter' => 'authFilter:Admin']);

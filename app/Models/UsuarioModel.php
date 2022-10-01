@@ -31,9 +31,10 @@ class UsuarioModel extends Model
         ],
         'usuario_nacimiento' => [
             // TODO: add date format validation
-            'rules' => 'required',
+            'rules' => 'required|valid_date[Y-m-d]',
             'errors' => [
                 'required' => 'El campo usuario_nacimiento es requerido',
+                'valid_date' => 'El campo usuario_nacimiento debe ser una fecha valida: Y-m-d',
             ]
         ],
         'usuario_dui' => [
