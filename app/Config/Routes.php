@@ -51,6 +51,7 @@ $routes->delete('/departamento/(:num)', 'Departamento::delete/$1', ['filter' => 
 
 $routes->get('/usuario', 'Usuario::get');
 $routes->post('/usuario', 'Usuario::create');
+$routes->post('/usuario/(:num)', 'Usuario::update/$1');
 $routes->delete('/usuario/(:num)', 'Usuario::delete/$1');
 $routes->post('/usuario/login', 'Usuario::login');
 
