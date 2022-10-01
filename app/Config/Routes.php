@@ -76,12 +76,12 @@ $routes->post('/capacitacion-fecha/(:num)', 'CapacitacionFechas::update/$1');
 $routes->delete('/capacitacion-fecha/(:num)', 'CapacitacionFechas::delete/$1');
 
 
-$routes->get('/mision', 'Mision::index');
+$routes->get('/mision', 'Mision::index', ['filter' => 'modelFilter:capacitacion']);
 $routes->post('/mision', 'Mision::create');
 $routes->post('/mision/(:num)', 'Mision::update/$1');
 $routes->get('/mision/(:num)', 'Mision::index/$1');
 
-$routes->get('/capacitacion', 'Capacitacion::index');
+$routes->get('/capacitacion', 'Capacitacion::index', ['filter' => 'modelFilter:capacitacion']);
 $routes->post('/capacitacion', 'Capacitacion::create');
 $routes->post('/capacitacion/(:num)', 'Capacitacion::update/$1');
 $routes->get('/capacitacion/(:num)', 'Capacitacion::index/$1');

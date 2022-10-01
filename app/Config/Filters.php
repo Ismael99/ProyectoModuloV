@@ -27,6 +27,10 @@ class Filters extends BaseConfig
             \App\Filters\AuthFilter::class,
             \App\Filters\RoleFilter::class
         ],
+        'modelFilter' => [
+            \App\Filters\AuthFilter::class,
+            \App\Filters\QueryFilter::class,
+        ]
     ];
 
     /**

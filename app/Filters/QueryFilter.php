@@ -7,8 +7,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-
-class RoleFilter implements FilterInterface
+class QueryFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -27,26 +26,33 @@ class RoleFilter implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        $roles = $arguments;
+        $models = array('capacitacion', 'mision');
+        $currentModel = $arguments[0];
+
+        if (!in_array($currentModel, $models)) {
+            $response = service('response');
+            $response->setHeader('Content-Type', 'application/json');
+            $response->setBody(json_encode(['statusCode' => 422, 'message' => 'Unprocessable Entity']));
+            $response->setStatusCode(422);
+
+            return $response;
+        }
+
         $model = new UsuarioModel();
         $user = $model
             ->where('usuario.usuario_username', $request->user->usuario_username)
             ->join('rol', 'rol.rol_id = usuario.rol_id')
+            ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
             ->first();
 
         $request->user = $user;
 
-        if (
-            !is_null($roles)
-            && count($roles) > 0
-            && $user->rol_nombre !== 'Admin'
-            && !in_array($user->rol_nombre, $roles)
-        ) {
-            $response = service('response');
-            $response->setHeader('Content-Type', 'application/json');
-            $response->setBody(json_encode(['statusCode' => 403, 'message' => 'Forbidden resource']));
-            $response->setStatusCode(403);
-            return $response;
+        if ($user->rol_nombre !== 'Admin') {
+            if ($user->rol_nombre === 'Gerente') {
+                $request->where = 'departamento.departamento_id = ' . $user->departamento_id;
+            } else {
+                $request->where = 'usuario_' . $currentModel . '.' . 'usuario_id = ' . $user->usuario_id;
+            }
         }
     }
 
@@ -64,6 +70,5 @@ class RoleFilter implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
     }
 }
