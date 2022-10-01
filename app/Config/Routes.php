@@ -74,6 +74,7 @@ $routes->post('/capacitacion-fecha', 'CapacitacionFechas::create');
 $routes->post('/capacitacion-fecha/(:num)', 'CapacitacionFechas::update/$1');
 $routes->delete('/capacitacion-fecha/(:num)', 'CapacitacionFechas::delete/$1');
 
+
 $routes->get('/mision', 'Mision::index');
 $routes->post('/mision', 'Mision::create');
 $routes->post('/mision/(:num)', 'Mision::update/$1');
@@ -83,6 +84,17 @@ $routes->get('/capacitacion', 'Capacitacion::index');
 $routes->post('/capacitacion', 'Capacitacion::create');
 $routes->post('/capacitacion/(:num)', 'Capacitacion::update/$1');
 $routes->get('/capacitacion/(:num)', 'Capacitacion::index/$1');
+
+$routes->get('/institucion', 'Institucion::get', ['filter' => 'authFilter']);
+$routes->post('/institucion', 'Institucion::create');
+$routes->post('/institucion/(:num)', 'Institucion::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/institucion/(:num)', 'Institucion::delete/$1');
+
+$routes->get('/modalidad', 'Modalidad::get', ['filter' => 'authFilter']);
+$routes->post('/modalidad', 'Modalidad::create', ['filter' => 'authFilter:Admin']);
+$routes->post('/modalidad/(:num)', 'Modalidad::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/modalidad/(:num)', 'Modalidad::delete/$1', ['filter' => 'authFilter:Admin']);
+
 
 /*
  * --------------------------------------------------------------------

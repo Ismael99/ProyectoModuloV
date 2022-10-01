@@ -47,10 +47,10 @@ class Usuario extends BaseController
             ];
             return $this->respond($response, 400);
         } else {
-            $usuarioModel->save($usuario);
-
-            $usuario = $usuarioModel->where('usuario.usuario_username', $usuario['usuario_username'])->first();
+            
             unset($usuario->usuario_password);
+            $usuarioModel->save($usuario);
+            $usuario = $usuarioModel->where('usuario.usuario_username', $usuario['usuario_username'])->first();
 
             $response = [
                 'statusCode' => 201,
