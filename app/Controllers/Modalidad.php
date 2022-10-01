@@ -17,7 +17,6 @@ class Modalidad extends BaseController
         $modalidadModel = new ModalidadModel();
         $modalidad = new ModalidadEntity();
         $modalidad = $this->request->getVar();
-
         if (!$this->validate($modalidadModel->rules)) {
             $errors = $this->validator->getErrors();
             $response = [
@@ -119,6 +118,5 @@ class Modalidad extends BaseController
             ];
             return $this->respond($response, 200);
         }
-        
     }
 }

@@ -18,7 +18,8 @@ class Institucion extends BaseController
         $institucionModel = new InstitucionModel();
         $institucion = new InstitucionEntity();
         $institucion = $this->request->getVar();
-
+        //Add created by field
+        $institucion["institucion_created_by"] = $this->request->user->usuario_id;
         if (!$this->validate($institucionModel->rules)) {
             $errors = $this->validator->getErrors();
             $response = [

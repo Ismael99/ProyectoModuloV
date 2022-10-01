@@ -64,13 +64,13 @@ class CapacitacionFechas extends BaseController
         if (is_null($capacitacionFecha)) {
             $response = [
                 'statusCode' => 400,
-                'message' => 'El campo mission_fechas_id es invalido',
+                'message' => 'El campo capacitacion_fechas_id es invalido',
             ];
 
             return $this->respond($response, 400);
         }
 
-        $result = $this->save();
+        $result = $this->save($id);
 
         return $this->respond($result['response'], $result['statusCode']);
     }
@@ -82,7 +82,7 @@ class CapacitacionFechas extends BaseController
         if (is_null($capacitacionFecha)) {
             $response = [
                 'statusCode' => 400,
-                'message' => 'El campo mission_fechas_id es invalido',
+                'message' => 'El campo capacitacion_fechas_id es invalido',
             ];
 
             return $this->respond($response, 400);
@@ -93,9 +93,10 @@ class CapacitacionFechas extends BaseController
         return $this->respond($result, 200);
     }
 
-    private function save()
+    private function save($id = null)
     {
         $input = $this->request->getPost();
+        $input['capacitacion_fechas_id'] = $id;
 
         if (!count($input)) {
 
@@ -142,7 +143,7 @@ class CapacitacionFechas extends BaseController
             return ['response' => $response, 'statusCode' => 400];
         }
 
-        $id = $this->model->getInsertID();
+        $id = $id ?? $this->model->getInsertID();
 
         $capacitacionFecha = $this
             ->model
