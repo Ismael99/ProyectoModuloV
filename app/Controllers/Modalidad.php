@@ -119,6 +119,6 @@ class Modalidad extends BaseController
             ];
             return $this->respond($response, 200);
         }
-        return $this->respond($response);
+        
     }
 }

@@ -46,7 +46,7 @@ class Rol extends BaseController
         return $this->respond($response);
     }
 
-    /* public function update($rol_id)
+    public function update($rol_id)
     {
         $rolModel = new RolModel();
         $rol = new RolEntity();
@@ -54,28 +54,35 @@ class Rol extends BaseController
 
         $rol_id_num = (int) $rol_id;
 
-        if ($rol_id_num <= 0 || $rolModel->where("rol.id", $rol_id_num)->first() == null) {
+        $rolToUpdate = $rolModel->where("rol.rol_id", $rol_id_num)->first();
+
+        if ($rol_id_num <= 0 || $rolToUpdate==null) {
             $response = [
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
             ];
             return $this->respond($response);
         }
-
-        $rolToUpdate = $rolModel->where("rol.id", $rol_id_num)->first();
-        // $data = [...$rol, ...$rolToUpdate];
-        
+ 
         $dataPrev = [
-            "nombre" => $rolToUpdate->nombre,
-            "descripcion" => $rolToUpdate->descripcion
+            "rol_nombre" => $rolToUpdate->rol_nombre,
+            "rol_descripcion" => $rolToUpdate->rol_descripcion,
         ];
-        
-        
-        $data = array_merge($dataPrev, $rol);
-        return $this->respond($rol);
 
-        if (!$this->validate($rolModel->rules)) {
-            $errors = $this->validator->getErrors();
+        $data = array_merge($dataPrev, $rol);
+
+        $array_keys_data = array_keys($data);
+        foreach($array_keys_data as $key){
+            if($data[$key] == $dataPrev[$key]){
+                unset($data[$key]);
+            }
+        };
+
+        $validation = \Config\Services::validation();
+        $validation->setRules($rolModel->rulesUpdate);
+        
+        if (!$validation->run($data)) {
+            $errors = $validation->getErrors();
             // echo $errors;
             $response = [
                 'statusCode' => 400,
@@ -83,38 +90,36 @@ class Rol extends BaseController
             ];
             return $this->respond($response);
         } else {
-            $rolModel->update($rol_id_num, $data);
+            if(count($data) > 0){
+                $rolModel->update($rol_id_num, $data);
+            }
+            $rolUpdated = $rolModel->where("rol.rol_id", $rol_id_num)->first();
             $response = [
                 'statusCode' => 201,
-                'data' => $rol
+                'data' => $rolUpdated
             ];
             return $this->respond($response);
         }
-    } */
+    } 
 
     public function delete($rol_id)
     {
         $rol_id_num = (int) $rol_id;
-        $rolModel = new RolModel();
-        $rolesData = $rolModel->findAll();
-        $response = [
-            'statusCode' => 200,
-            'data' => $rolesData
-        ];
-        if ($rol_id_num <= 0) {
+        $rolModel = new rolModel();
+        if ($rol_id_num <= 0 || $rolModel->where("rol.rol_id", $rol_id_num)->first() == null ) {
             $response = [
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
         } else {
             $rolModel->delete($rol_id_num);
             $response = [
                 'statusCode' => 200,
-                'msg' => 'Rol eliminado'
+                'msg' => 'Modalidad eliminada'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 200);
         }
-        return $this->respond($response);
+        
     }
 }

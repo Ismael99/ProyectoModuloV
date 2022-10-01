@@ -28,4 +28,13 @@ class RolModel extends Model
         ],
 
     ];
+
+    public $rulesUpdate = [
+        'rol_nombre' => [
+            'rules' => 'is_unique[rol.rol_nombre]',
+            'errors' => [
+                'is_unique' => 'El campo rol_nombre debe de ser único',
+            ]
+        ],
+    ];
 }

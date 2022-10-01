@@ -38,14 +38,15 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 
 $routes->get('/rol', 'Rol::get', ['filter' => 'authFilter']);
-$routes->post('/rol', 'Rol::create');
-$routes->put('/rol/(:num)', 'Rol::update/$1');
-$routes->delete('/rol/(:num)', 'Rol::delete/$1');
+$routes->post('/rol', 'Rol::create', ['filter' => 'authFilter:Admin']);
+$routes->post('/rol/(:num)', 'Rol::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/rol/(:num)', 'Rol::delete/$1', ['filter' => 'authFilter:Admin']);
 
 
-$routes->get('/departamento', 'Departamento::get');
-$routes->post('/departamento', 'Departamento::create');
-$routes->delete('/departamento/(:num)', 'Departamento::delete/$1');
+$routes->get('/departamento', 'Departamento::get', ['filter' => 'authFilter']);
+$routes->post('/departamento', 'Departamento::create', ['filter' => 'authFilter:Admin']);
+$routes->post('/departamento/(:num)', 'Departamento::update/$1', ['filter' => 'authFilter:Admin']);
+$routes->delete('/departamento/(:num)', 'Departamento::delete/$1', ['filter' => 'authFilter:Admin']);
 
 
 $routes->get('/usuario', 'Usuario::get');
