@@ -86,7 +86,7 @@ $routes->post('/capacitacion/(:num)', 'Capacitacion::update/$1');
 $routes->get('/capacitacion/(:num)', 'Capacitacion::index/$1');
 
 $routes->get('/institucion', 'Institucion::get', ['filter' => 'authFilter']);
-$routes->post('/institucion', 'Institucion::create');
+$routes->post('/institucion', 'Institucion::create', ['filter' => 'authFilter:Admin']);
 $routes->post('/institucion/(:num)', 'Institucion::update/$1', ['filter' => 'authFilter:Admin']);
 $routes->delete('/institucion/(:num)', 'Institucion::delete/$1');
 
