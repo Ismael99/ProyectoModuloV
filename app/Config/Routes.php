@@ -79,6 +79,11 @@ $routes->post('/mision', 'Mision::create');
 $routes->post('/mision/(:num)', 'Mision::update/$1');
 $routes->get('/mision/(:num)', 'Mision::index/$1');
 
+$routes->get('/capacitacion', 'Capacitacion::index');
+$routes->post('/capacitacion', 'Capacitacion::create');
+$routes->post('/capacitacion/(:num)', 'Capacitacion::update/$1');
+$routes->get('/capacitacion/(:num)', 'Capacitacion::index/$1');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

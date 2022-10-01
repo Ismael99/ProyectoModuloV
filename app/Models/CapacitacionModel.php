@@ -17,27 +17,26 @@ class CapacitacionModel extends Model
         "institucion_id",
         "modalidad_id"
     ];
-    public $rules = [
+
+    protected $validationRules = [
+        'capacitacion_nombre' => 'required|is_unique[capacitacion.capacitacion_nombre]',
+        'institucion_id' => 'required|integer',
+        'modalidad_id' => 'required|integer',
+    ];
+
+
+    protected $validationMessages = [
         'capacitacion_nombre' => [
-            'rules' => 'required|is_unique[capacitacion.capacitacion_nombre]',
-            'errors' => [
-                'required' => 'El campo capacitacion_nombre es requerido',
-                'is_unique' => 'El campo capacitacion_nombre debe de ser único'
-            ]
+            'required' => 'El campo capacitacion_nombre es requerido',
+            'is_unique' => 'El campo capacitacion_nombre debe de ser único'
         ],
         'institucion_id' => [
-            'rules' => 'required|integer',
-            'errors' => [
-                'required' => 'El campo institucion_id es requerido',
-                'integer' => 'El campo institucion_id debe ser un numero entero'
-            ]
+            'required' => 'El campo institucion_id es requerido',
+            'integer' => 'El campo institucion_id debe ser un numero entero'
         ],
         'modalidad_id' => [
-            'rules' => 'required|integer',
-            'errors' => [
-                'required' => 'El campo modalidad_id es requerido',
-                'integer' => 'El campo modalidad_id debe ser un numero entero'
-            ]
-        ],
+            'required' => 'El campo modalidad_id es requerido',
+            'integer' => 'El campo modalidad_id debe ser un numero entero'
+        ]
     ];
 }
