@@ -77,6 +77,34 @@ class UsuarioModel extends Model
             ]
         ]
     ];
+    
+    public $rulesUpdate = [
+        // 'usuario_nacimiento' => [
+        //     // TODO: add date format validation
+        //     'rules' => 'valid_date[Y-m-d]',
+        //     'errors' => [
+        //         'valid_date' => 'El campo usuario_nacimiento debe ser una fecha valida: Y-m-d',
+        //     ]
+        // ],
+        'usuario_dui' => [
+            'rules' => 'is_unique[usuario.usuario_dui]',
+            'errors' => [
+                'is_unique' => 'El campo usuario_dui debe de ser unico'
+            ]
+        ],
+        'usuario_username' => [
+            'rules' => 'is_unique[usuario.usuario_username]',
+            'errors' => [
+                'is_unique' => 'El campo usuario_username debe de ser unico'
+            ]
+        ],
+        'usuario_telefono' => [
+            'rules' => 'is_unique[usuario.usuario_telefono]',
+            'errors' => [
+                'is_unique' => 'El campo usuario_telefono debe de ser único'
+            ]
+        ],
+    ];
 
     protected function hashPassword(array $user)
     {

@@ -71,27 +71,101 @@ class Usuario extends BaseController
         return $this->respond($response);
     }
 
-    /*  public function update($departamento_id)
+     public function update($usuario_id)
     {
-        $departamentoModel = new DepartamentoModel();
-        $departamento = new DepartamentoEntity();
-        $departamento = $this->request->getVar();
+        $usuarioModel = new UsuarioModel();
+        $usuario = new UsuarioEntity();
+        $usuario = $this->request->getVar();
 
-        $departamento_id_num = (int) $departamento_id;
+        $usuario_id_num = (int) $usuario_id;
 
-        if ($departamento_id_num <= 0 || !$departamentoModel->find($departamento_id_num)) {
+        $usuarioToUpdate = $usuarioModel->where("usuario.usuario_id", $usuario_id_num)->first();
+
+        if ($usuario_id_num <= 0 || $usuarioToUpdate==null) {
             $response = [
                 'statusCode' => 400,
-                'errors' => 'El id no es válido'
+                'errors' => 'El usuario_id no es válido'
             ];
-            return $this->respond($response);
+            return $this->respond($response, 400);
+        }
+ 
+        $dataPrev = [
+            "usuario_username" => $usuarioToUpdate->usuario_username,
+            "usuario_password" => $usuarioToUpdate->usuario_password,
+            "usuario_nombre" => $usuarioToUpdate->usuario_nombre,
+            "usuario_apellido" => $usuarioToUpdate->usuario_apellido,
+            "usuario_nacimiento" => $usuarioToUpdate->usuario_nacimiento,
+            "usuario_dui" => $usuarioToUpdate->usuario_dui,
+            "usuario_telefono" => $usuarioToUpdate->usuario_telefono,
+            "rol_id" => $usuarioToUpdate->rol_id,
+            "departamento_id" => $usuarioToUpdate->departamento_id,
+        ];
+
+        $data = array_merge($dataPrev, $usuario);
+
+        //Para llaves foraneas
+        $rolModel = new RolModel();
+        if($rolModel->where("rol.rol_id", (int) $data["rol_id"])->first() ==null ){
+            $response = [
+                'statusCode' => 400,
+                'errors' => 'El rol_id no es válido'
+            ];
+            return $this->respond($response, 400);
+        }
+        $departamentoModel = new DepartamentoModel();
+        if($departamentoModel->where("departamento.departamento_id", (int) $data["departamento_id"])->first() ==null ){
+            $response = [
+                'statusCode' => 400,
+                'errors' => 'El departamento_id no es válido'
+            ];
+            return $this->respond($response, 400);
         }
 
-        $rolToUpdate = $departamentoModel->find($departamento_id_num);
-        // return $this->respond($rolToUpdate);
+        $array_keys_data = array_keys($data);
+        foreach($array_keys_data as $key){
+            if($data[$key] == $dataPrev[$key]){
+                unset($data[$key]);
+            }
+        };
 
-        if (!$this->validate($departamentoModel->rules)) {
-            $errors = $this->validator->getErrors();
+        $validation = \Config\Services::validation();
+        $rules = $usuarioModel->rulesUpdate;
+        if($data["departamento_id"] != null){
+            $rules = array_merge($rules, [  
+                'departamento_id' => [
+                    'rules' => 'integer',
+                    'errors' => [
+                        'integer' => 'El campo departamento_id es un numero entero',
+                    ]
+                ],
+            ] );
+        }
+        if($data["rol_id"] != null){
+            $rules = array_merge($rules, [  
+                'rol_id' => [
+                    'rules' => 'integer',
+                    'errors' => [
+                        'integer' => 'El campo rol_id es un numero entero',
+                    ]
+                ],
+            ] );
+        }
+        if($data["usuario_nacimiento"] != null){
+            $rules = array_merge($rules, [  
+                'usuario_nacimiento' => [
+                    // TODO: add date format validation
+                    'rules' => 'valid_date[Y-m-d]',
+                    'errors' => [
+                        'valid_date' => 'El campo usuario_nacimiento debe ser una fecha valida: Y-m-d',
+                    ]
+                ],
+            ] );
+        }
+        
+        $validation->setRules($rules);
+        
+        if (!$validation->run($data)) {
+            $errors = $validation->getErrors();
             // echo $errors;
             $response = [
                 'statusCode' => 400,
@@ -99,14 +173,17 @@ class Usuario extends BaseController
             ];
             return $this->respond($response);
         } else {
-            $departamentoModel->update($rol_id_num, $departamento);
+            if(count($data) > 0){
+                $usuarioModel->update($usuario_id_num, $data);
+            }
+            $usuarioUpdated = $usuarioModel->where("usuario.usuario_id", $usuario_id_num)->first();
             $response = [
                 'statusCode' => 201,
-                'data' => $departamento
+                'data' => $usuarioUpdated
             ];
             return $this->respond($response);
         }
-    }*/
+    }
 
     public function delete($usuario_id)
     {
