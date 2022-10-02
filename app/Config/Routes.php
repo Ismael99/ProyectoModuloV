@@ -71,6 +71,16 @@ $routes->post('/mision-fecha', 'MisionFechas::create');
 $routes->post('/mision-fecha/(:num)', 'MisionFechas::update/$1');
 $routes->delete('/mision-fecha/(:num)', 'MisionFechas::delete/$1');
 
+$routes->post('/mision-foto', 'MisionFoto::create');
+$routes->get('/mision-foto', 'MisionFoto::get');
+$routes->post('/mision-foto/(:num)', 'MisionFoto::update/$1');
+$routes->delete('/mision-foto/(:num)', 'MisionFoto::delete/$1');
+
+$routes->post('/capacitacion-foto', 'CapacitacionFoto::create');
+$routes->get('/capacitacion-foto', 'CapacitacionFoto::get');
+$routes->post('/capacitacion-foto/(:num)', 'CapacitacionFoto::update/$1');
+$routes->delete('/capacitacion-foto/(:num)', 'CapacitacionFoto::delete/$1');
+
 $routes->get('/capacitacion-fecha', 'CapacitacionFechas::index');
 $routes->post('/capacitacion-fecha', 'CapacitacionFechas::create');
 $routes->post('/capacitacion-fecha/(:num)', 'CapacitacionFechas::update/$1');

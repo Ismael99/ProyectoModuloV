@@ -25,6 +25,13 @@ class MisionModel extends Model
         'mision_participantes' => 'permit_empty',
         'institucion_id' => 'required|integer',
     ];
+    
+    protected $rulesUpdate = [
+        'mision_nombre' =>  'is_unique[mision.mision_nombre]',
+        'mision_descripcion' => 'permit_empty',
+        'mision_participantes' => 'permit_empty',
+        'institucion_id' => 'integer',
+    ];
 
     protected $validationMessages = [
         'mision_nombre' => [

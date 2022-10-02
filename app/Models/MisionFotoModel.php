@@ -29,5 +29,7 @@ class MisionFotoModel extends Model
         ],
         
     ];
+    
+    public $rulesUpdate = [];
 
 }
