@@ -53,6 +53,8 @@ class QueryFilter implements FilterInterface
             } else {
                 $request->where = 'usuario_' . $currentModel . '.' . 'usuario_id = ' . $user->usuario_id;
             }
+        } else {
+            $request->where = null;
         }
     }
 
