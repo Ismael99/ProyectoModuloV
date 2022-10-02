@@ -37,13 +37,6 @@ class Mision extends BaseController
             ->select('mision.*, institucion.*')
             ->join('institucion', 'institucion.institucion_id = mision.institucion_id');
 
-        if (!is_null($this->request->where)) {
-            $query = $query
-                ->join('usuario_mision', 'usuario_mision.mision_id = mision.mision_id', 'left')
-                ->join('usuario', 'usuario.usuario_id = usuario_mision.usuario_id', 'left')
-                ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
-                ->where($this->request->where);
-        }
 
         if (!is_null($id)) {
             $data = $query->find($id);
@@ -71,6 +64,7 @@ class Mision extends BaseController
                 $usuariosQuery = $usuariosQuery
                     ->where($this->request->where);
             }
+            
 
             $data->usuarios = $usuariosQuery->findAll();
         } else {

@@ -40,14 +40,6 @@ class Capacitacion extends BaseController
             ->join('institucion', 'institucion.institucion_id = capacitacion.institucion_id', 'left')
             ->join('modalidad', 'modalidad.modalidad_id = capacitacion.modalidad_id', 'left');
 
-        if (!is_null($this->request->where)) {
-            $query = $query
-                ->join('usuario_capacitacion', 'usuario_capacitacion.capacitacion_id = capacitacion.capacitacion_id', 'left')
-                ->join('usuario', 'usuario.usuario_id = usuario_capacitacion.usuario_id', 'left')
-                ->join('departamento', 'departamento.departamento_id = usuario.departamento_id', 'left')
-                ->where($this->request->where);
-        }
-
         if (!is_null($id)) {
             $data = $query->find($id);
 
