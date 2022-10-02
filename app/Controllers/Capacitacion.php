@@ -191,6 +191,7 @@ class Capacitacion extends BaseController
             }
         } else {
             $entity = $input;
+            $hasChanged = true;
         }
 
         // save model
@@ -225,8 +226,12 @@ class Capacitacion extends BaseController
         return ['response' => $response, 'statusCode' => 201];
     }
 
-    private function isInvalidEntityId($model, int $id, string $message = 'Id invalido')
+    private function isInvalidEntityId($model, $id = null, string $message = 'Id invalido')
     {
+        if (is_null($id)) {
+            return $message;
+        }
+
         $entity = $model->find($id);
 
         if (is_null($entity)) {
