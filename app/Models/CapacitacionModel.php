@@ -24,7 +24,6 @@ class CapacitacionModel extends Model
         'modalidad_id' => 'required|integer',
     ];
 
-
     protected $validationMessages = [
         'capacitacion_nombre' => [
             'required' => 'El campo capacitacion_nombre es requerido',

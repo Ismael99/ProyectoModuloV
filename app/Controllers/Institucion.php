@@ -125,7 +125,7 @@ class Institucion extends BaseController
             ];
             return $this->respond($response, 400);
         } else {
-            // $institucionModel->delete($institucion_id_num);
+            $institucionModel->delete($institucion_id_num);
             $response = [
                 'statusCode' => 200,
                 'msg' => 'Institucion eliminada'

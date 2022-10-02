@@ -55,37 +55,37 @@ class MisionFoto extends BaseController
         return $this->respond($response, 200);
     }
 
-     public function update($misionFoto_id)
+     public function update($mision_foto_id)
     {
         $misionFotoModel = new MisionFotoModel();
         $misionFoto = new MisionFotoEntity();
         $misionFoto = $this->request->getVar();
 
-        $misionFoto_id_num = (int) $misionFoto_id;
+        $mision_foto_id_num = (int) $mision_foto_id;
 
-        $misionFotoToUpdate = $misionFotoModel->where("misionFoto.misionFoto_id", $misionFoto_id_num)->first();
+        $misionFotoToUpdate = $misionFotoModel->where("mision_foto.mision_foto_id", $mision_foto_id_num)->first();
 
-        if ($misionFoto_id_num <= 0 || $misionFotoToUpdate==null) {
+        if ($mision_foto_id_num <= 0 || $misionFotoToUpdate==null) {
             $response = [
                 'statusCode' => 400,
-                'errors' => 'El misionFoto_id no es válido'
+                'errors' => 'El mision_foto_id no es válido'
             ];
             return $this->respond($response, 400);
         }
- 
+
         $dataPrev = [
-            "misionFoto_nombre" => $misionFotoToUpdate->misionFoto_nombre,
-            "misionFoto_created_by" => $misionFotoToUpdate->misionFoto_created_by
+            "mision_foto_url" => $misionFotoToUpdate->mision_foto_nombre,
+            "mision_id" => $misionFotoToUpdate->mision_id
         ];
 
         $data = array_merge($dataPrev, $misionFoto);
 
         //Para llaves foraneas
-        $userModel = new UsuarioModel();
-        if($userModel->where("usuario.usuario_id", (int) $data["misionFoto_created_by"])->first() ==null ){
+        $misionModel = new MisionModel();
+        if($misionModel->where("mision.mision_id", (int) $data["mision_id"])->first() ==null ){
             $response = [
                 'statusCode' => 400,
-                'errors' => 'El usuario_id no es válido'
+                'errors' => 'mision_id no es válido'
             ];
             return $this->respond($response, 400);
         }
@@ -97,10 +97,21 @@ class MisionFoto extends BaseController
             }
         };
 
+        $rules = $misionFotoModel->rulesUpdate;
+        if($data["mision_id"] != null){
+            $rules = array_merge($rules, [  
+                'mision_id' => [
+                    'rules' => 'integer',
+                    'errors' => [
+                        'integer' => 'El campo mision_id es un numero entero',
+                    ]
+                ],
+            ] );
+        }
         $validation = \Config\Services::validation();
-        $validation->setRules($misionFotoModel->rulesUpdate);
+        $validation->setRules($rules);
         
-        if (!$validation->run($data)) {
+        if (!$validation->run($data) && count($rules) > 0) {
             $errors = $validation->getErrors();
             // echo $errors;
             $response = [
@@ -112,7 +123,7 @@ class MisionFoto extends BaseController
             if(count($data) > 0){
                 $misionFotoModel->update($misionFoto_id_num, $data);
             }
-            $misionFotoUpdated = $misionFotoModel->where("misionFoto.misionFoto_id", $misionFoto_id_num)->first();
+            $misionFotoUpdated = $misionFotoModel->where("mision_foto.mision_foto_id", $mision_foto_id_num)->first();
             $response = [
                 'statusCode' => 201,
                 'data' => $misionFotoUpdated
@@ -121,18 +132,18 @@ class MisionFoto extends BaseController
         }
     }
 
-    public function delete($misionFoto_id)
+    public function delete($mision_foto_id)
     {
-        $misionFoto_id_num = (int) $misionFoto_id;
+        $mision_foto_id_num = (int) $mision_foto_id;
         $misionFotoModel = new MisionFotoModel();
-        if ($misionFoto_id_num <= 0 || $misionFotoModel->where("misionFoto.misionFoto_id", $misionFoto_id_num)->first() == null ) {
+        if ($mision_foto_id_num <= 0 || $misionFotoModel->where("mision_foto.mision_foto_id", $mision_foto_id_num)->first() == null ) {
             $response = [
                 'statusCode' => 400,
                 'errors' => 'El id no es válido'
             ];
             return $this->respond($response, 400);
         } else {
-            // $misionFotoModel->delete($misionFoto_id_num);
+            $misionFotoModel->delete($mision_foto_id_num);
             $response = [
                 'statusCode' => 200,
                 'msg' => 'MisionFoto eliminada'

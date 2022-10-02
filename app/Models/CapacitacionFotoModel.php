@@ -30,4 +30,5 @@ class CapacitacionFotoModel extends Model
         
     ];
 
+    public $rulesUpdate = [];
 }
