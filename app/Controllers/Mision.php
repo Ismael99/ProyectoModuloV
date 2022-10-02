@@ -34,7 +34,7 @@ class Mision extends BaseController
         $data = null;
         $query = $this
             ->model
-            ->select('mision.*, institucion.*, modalidad.*')
+            ->select('mision.*, institucion.*')
             ->join('institucion', 'institucion.institucion_id = mision.institucion_id');
 
         if (!is_null($this->request->where)) {
@@ -187,6 +187,7 @@ class Mision extends BaseController
             }
         } else {
             $entity = $input;
+            $hasChanged = true;
         }
 
         // save model
@@ -220,8 +221,12 @@ class Mision extends BaseController
         return ['response' => $response, 'statusCode' => 201];
     }
 
-    private function isInvalidEntityId($model, int $id, string $message = 'Id invalido')
+    private function isInvalidEntityId($model, $id = null, string $message = 'Id invalido')
     {
+        if (is_null($id)) {
+            return $message;
+        }
+
         $entity = $model->find($id);
 
         if (is_null($entity)) {
