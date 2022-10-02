@@ -220,8 +220,11 @@ class Mision extends BaseController
         return ['response' => $response, 'statusCode' => 201];
     }
 
-    private function isInvalidEntityId($model, int $id, string $message = 'Id invalido')
+    private function isInvalidEntityId($model, $id=null, string $message = 'Id invalido')
     {
+        if($id == null){
+            return $message;
+        }
         $entity = $model->find($id);
 
         if (is_null($entity)) {

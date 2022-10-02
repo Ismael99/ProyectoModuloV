@@ -29,5 +29,15 @@ class MisionFotoModel extends Model
         ],
         
     ];
+    
+    public $rulesUpdate = [
+        'mision_id' => [
+            'rules' => 'integer',
+            'errors' => [
+                'integer' => 'El campo mision_id debe ser un numero entero',
+            ]
+        ],
+        
+    ];
 
 }
